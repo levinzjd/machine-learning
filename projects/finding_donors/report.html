@@ -11926,7 +11926,7 @@ Name: income, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Total number of records</span>
@@ -11939,7 +11939,7 @@ Name: income, dtype: int64</pre>
 <span class="n">n_at_most_50k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&lt;=50K&quot;</span><span class="p">])</span>
 
 <span class="c1"># TODO: Percentage of individuals whose income is more than $50,000</span>
-<span class="n">greater_percent</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_greater_50k</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_records</span><span class="p">)</span>
+<span class="n">greater_percent</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">n_greater_50k</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_records</span><span class="p">)</span>
 
 <span class="c1"># Print the results</span>
 <span class="k">print</span> <span class="s2">&quot;Total number of records: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_records</span><span class="p">)</span>
@@ -11961,7 +11961,7 @@ Name: income, dtype: int64</pre>
 <pre>Total number of records: 45222
 Individuals making more than $50,000: 11208
 Individuals making at most $50,000: 34014
-Percentage of individuals making more than $50,000: 0.25%
+Percentage of individuals making more than $50,000: 24.78%
 </pre>
 </div>
 </div>
@@ -13134,16 +13134,18 @@ $$ F_{\beta} = (1 + \beta^2) \cdot \frac{precision \cdot recall}{\left( \beta^2 
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
-<p>LogisticRegression application: classification problems. e.g Survival rate in HealthCare research
+<h4 id="Models-overview">Models overview<a class="anchor-link" href="#Models-overview">&#182;</a></h4><p>LogisticRegression application: classification problems. e.g Survival rate in HealthCare research
 pros: easy to implement, interpretable parameters, fast training time
 cons: relies on transformation of non-linear features, does not handle well with multiple categories</p>
 <p>SVM applications: computer vision/ image recognition problems
 pros: can capture non-linear relationship by using kernel trick, could handle lots of features
-cons: treat different features in similar way to compute similarity, need domain knowledge to select kernels to adjust this</p>
+cons: need domain knowledge to select kernels to capture non-linear relationship, some kernels would tend to overfit depending on problems</p>
 <p>RandomForest applications: classification and regression problems. image recogniction and patient classification
-pros: easy to implement, fast training, able to capture non-linear realtionship, reduce overfitting by averaging the result of each tree
+pros: easy to implement, fast training, able to capture non-linear realtionship, reduce overfitting by averaging the result of each tree, performs very well in most cases
 cons: no interpretable parameters available</p>
-<p>In this problem, we could use any of them to classify the income. We can compare the results and test the performance of each of them.</p>
+<h4 id="Rational-of-choosing-these-3-models">Rational of choosing these 3 models<a class="anchor-link" href="#Rational-of-choosing-these-3-models">&#182;</a></h4><p>In this problem, we would like to predict income based on other features. Since this is a binary classification problem, Logistic Regression is one of the mostly used model since it has fast implemantaion and interpretable features.</p>
+<p>However, we cannot make sure all the raltionship between 'income' and other features are linear, SVM and RandomForest could be the models that capture non-linear relationships.</p>
+<p>There are a lot of features, RandomForest would potentially overfit and we have no preference to apply specific kernel tricks for SVM. Therefore, we can test all 3 models to compare the performance of each of them.</p>
 
 </div>
 </div>
@@ -13214,16 +13216,16 @@ In the code block below, you will need to implement the following:</p>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;pred_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
             
     <span class="c1"># TODO: Compute accuracy on the first 300 training samples</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;acc_train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">predictions_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">[:</span><span class="mi">300</span><span class="p">])</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;acc_train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">[:</span><span class="mi">300</span><span class="p">],</span><span class="n">predictions_train</span><span class="p">)</span>
         
     <span class="c1"># TODO: Compute accuracy on test set</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;acc_test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">predictions_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;acc_test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">predictions_test</span><span class="p">)</span>
     
     <span class="c1"># TODO: Compute F-score on the the first 300 training samples</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;f_train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fbeta_score</span><span class="p">(</span><span class="n">predictions_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">[:</span><span class="mi">300</span><span class="p">],</span><span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;f_train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fbeta_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">[:</span><span class="mi">300</span><span class="p">],</span><span class="n">predictions_train</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
         
     <span class="c1"># TODO: Compute F-score on the test set</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;f_test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fbeta_score</span><span class="p">(</span><span class="n">predictions_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;f_test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fbeta_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">predictions_test</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
        
     <span class="c1"># Success</span>
     <span class="k">print</span> <span class="s2">&quot;{} trained on {} samples.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">sample_size</span><span class="p">)</span>
@@ -14075,7 +14077,7 @@ WERIkiRJ6otFhCRJkqS+/H9E7CNmcHUW7QAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
-<p>From the visualization above we know that SVC took much longer training/predicting time than other two models , while it achieved lower accuracy on both training and testing set. This could be due to the expanded dimensions in original dataset and hence exponentially increased the training time for SVC as the matrix need to computed became exponentially larger.</p>
+<h4 id="Model-Selection">Model Selection<a class="anchor-link" href="#Model-Selection">&#182;</a></h4><p>From the visualization above we know that SVC took much longer training/predicting time than other two models , while it achieved lower accuracy on both training and testing set. This could be due to the expanded dimensions in original dataset and hence exponentially increased the training time for SVC as the matrix need to computed became exponentially larger.</p>
 <p>RandomForest did very well on training set but much worse in testing set which indicated overfitting. As above, too many features tend to overfit as the data stay the same.</p>
 <p>In this case, I would believe LogisticRegression might be more appropriate compared to the other models before setting other parameters.</p>
 
@@ -14098,8 +14100,13 @@ WERIkiRJ6otFhCRJkqS+/H9E7CNmcHUW7QAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong> 
-The LogisticeRegression is much simpler compared to SVM and RandomForest and less prone to overfitting.</p>
-<p>It would take in all variables and fit in the linear relationship between features and target variable, then minimize the error and obtain the optimized parameters. Additionally, we can adjust regularization term in logisticregression to reduce overfitting.</p>
+The Logistic Regression is much simpler compared to SVM and RandomForest and less prone to overfitting.</p>
+<h5 id="Logistic-Regression-Implementation">Logistic Regression Implementation<a class="anchor-link" href="#Logistic-Regression-Implementation">&#182;</a></h5><ol>
+<li>During training phase, Logistic Regression will assign a weight to each of the features by minimizing sum of square errors</li>
+<li>When predicting, Logistic Regression will apply the weights to the corresponding features in data (linear transfromation)</li>
+<li>Adding up the weighted feature values and apply a sigmoid function to tranform the sum-up value into probability value between (0,1)</li>
+<li>Label the data based on whether the final value is closer to 0 or 1 (threshold 0.5）</li>
+</ol>
 
 </div>
 </div>
@@ -14289,10 +14296,19 @@ The Optimized Model has higher accuracy score and F score than naive predictor a
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong>
-Top 5 from high to low :
+<p><strong>Answer:</strong></p>
+<h5 id="Choice-of-the-important-features">Choice of the important features<a class="anchor-link" href="#Choice-of-the-important-features">&#182;</a></h5><p>Top 5 from high to low :
 Capital-gain, Capital-loss, Occupation, Education, relationship</p>
-<p>The capital gain and loss roughly give us the information about the income. Besides this, I think occupation, education and relationship will give us the bigger picture about people's financial status.</p>
+<h5 id="Rational">Rational<a class="anchor-link" href="#Rational">&#182;</a></h5><ol>
+<li>The capital gain roughly gives us the information about how much did the candidate make</li>
+<li>The capital loss roughly gives us the information about how much did the candidate spend</li>
+</ol>
+<p>Combing 1 and 2 together we can roughly guess the net value of the candidate</p>
+<ol>
+<li>Occupation usually tells us the social status of the candidate which could be useful to predict the income</li>
+<li>Education is another feature tells us about the background the candidate which is also related to their income level</li>
+<li>Relationship indicates how much did the candidate pay for rents, kids and other expenses</li>
+</ol>
 
 </div>
 </div>
@@ -14705,9 +14721,10 @@ Zj3KGUEzMzOzHuWMoJmZmVmP+j9qPNBdVFnE7AAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong>
-This covers capital-gain, education and relationship I mentioned above, though in different order. But this would depend how the RandomForest train data.</p>
-<p>The age does make sense, as people will usually have higher pay as they grow order in most cases.</p>
+<p><strong>Answer:</strong></p>
+<p>Compare to the features selected above
+This covers capital-gain, education and relationship I mentioned above, though in different order. However, the order would actually depend how the RandomForest train data.</p>
+<p>Besides those 3 features, age also plays important role in predicting income. It did make sense since more experienced people are more likely to have higher income.</p>
 
 </div>
 </div>
